@@ -1,41 +1,41 @@
 {
-    "products": [
-      {
-        "id": 1,
-        "imageUrl": "https://via.placeholder.com/200",
-        "name": "Product 1",
-        "count": 4,
-        "size": {
-          "width": 200,
-          "height": 200
-        },
-        "weight": "200g",
-        "comments": [
-          {
-            "id": 1,
-            "productId": 1,
-            "description": "Great product!",
-            "date": "14:00 22.08.2021"
-          },
-          {
-            "id": 2,
-            "productId": 1,
-            "description": "Works as expected.",
-            "date": "16:30 22.08.2021"
-          }
-        ]
+  "products": [
+    {
+      "id": "1",
+      "imageUrl": "https://images.pexels.com/photos/335257/pexels-photo-335257.jpeg",
+      "name": "Product 1",
+      "count": 4,
+      "size": {
+        "width": 200,
+        "height": 200
       },
-      {
-        "id": 2,
-        "imageUrl": "https://via.placeholder.com/200",
-        "name": "Product 2",
-        "count": 10,
-        "size": {
-          "width": 150,
-          "height": 150
+      "weight": "200g",
+      "comments": [
+        {
+          "id": 1,
+          "productId": 1,
+          "description": "Great product!",
+          "date": "14:00 22.08.2021"
         },
-        "weight": "150g",
-        "comments": []
-      }
-    ]
-  }
+        {
+          "id": 2,
+          "productId": 1,
+          "description": "Works as expected.",
+          "date": "16:30 22.08.2021"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "imageUrl": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "name": "SexyProduct 2",
+      "count": 10,
+      "size": {
+        "width": 200,
+        "height": 150
+      },
+      "weight": "150g",
+      "comments": []
+    }
+  ]
+}

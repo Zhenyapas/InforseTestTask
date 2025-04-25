@@ -1,0 +1,153 @@
+.product-page {
+  padding: 30px 0;
+}
+
+.back-button {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: transparent;
+  color: var(--primary-color);
+  padding: 5px 10px;
+}
+
+.back-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.product-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+  .product-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.product-image {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.product-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.product-info h1 {
+  margin-bottom: 20px;
+  color: var(--secondary-color);
+}
+
+.product-details {
+  margin-bottom: 30px;
+}
+
+.detail-item {
+  display: flex;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.detail-label {
+  font-weight: bold;
+  min-width: 100px;
+}
+
+.product-actions {
+  margin-top: 20px;
+}
+
+.edit-button {
+  background-color: var(--secondary-color);
+}
+
+.edit-button:hover {
+  background-color: #34495e;
+}
+
+
+.comments-section {
+  margin-top: 50px;
+}
+
+.comments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.comments-list {
+  list-style-type: none;
+}
+
+.comment-item {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: var(--shadow);
+}
+
+.comment-content {
+  margin-bottom: 10px;
+}
+
+.comment-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #777;
+}
+
+.delete-comment {
+  background-color: var(--accent-color);
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+.delete-comment:hover {
+  background-color: #c0392b;
+}
+
+
+.add-comment-form {
+  margin-top: 30px;
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  resize: vertical;
+  min-height: 100px;
+}
+
+.submit-comment {
+  background-color: var(--primary-color);
+}
