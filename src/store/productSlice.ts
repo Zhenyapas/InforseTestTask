@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Product } from '../models/Product';
-import { fetchProducts, fetchProductById, updateProduct } from '../api/api';
+import { fetchProducts, fetchProductById, updateProduct, addComment, deleteComment } from '../api/api';
 
 interface ProductState {
   products: Product[];
@@ -36,6 +36,21 @@ export const updateProductThunk = createAsyncThunk(
     return await updateProduct(product);
   }
 );
+
+export const addCommentThunk = createAsyncThunk(
+    'products/addComment',
+    async ({ productId, description }: { productId: number; description: string }) => {
+      return await addComment(productId, description);
+    }
+  );
+  
+  export const deleteCommentThunk = createAsyncThunk(
+    'products/deleteComment',
+    async ({ productId, commentId }: { productId: number; commentId: number }) => {
+      await deleteComment(productId, commentId);
+      return { productId, commentId };
+    }
+  );
 
 const productSlice = createSlice({
   name: 'products',
@@ -85,7 +100,34 @@ const productSlice = createSlice({
       .addCase(updateProductThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to update product';
-      });
+      })
+      .addCase(addCommentThunk.fulfilled, (state, action) => {
+        const newComment = action.payload;
+        
+        if (state.currentProduct && state.currentProduct.id === newComment.productId) {
+          state.currentProduct.comments.push(newComment);
+        }
+        
+        const productIndex = state.products.findIndex(p => p.id === newComment.productId);
+        if (productIndex !== -1) {
+          state.products[productIndex].comments.push(newComment);
+        }
+      })
+      .addCase(deleteCommentThunk.fulfilled, (state, action) => {
+        const { productId, commentId } = action.payload;
+    
+        if (state.currentProduct && state.currentProduct.id === productId) {
+          state.currentProduct.comments = state.currentProduct.comments.filter(
+            comment => comment.id !== commentId
+          );
+        }
+        const productIndex = state.products.findIndex(p => p.id === productId);
+        if (productIndex !== -1) {
+          state.products[productIndex].comments = state.products[productIndex].comments.filter(
+            comment => comment.id !== commentId
+          );
+        }
+      })
   },
 });
 

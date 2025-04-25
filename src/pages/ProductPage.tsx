@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { fetchProduct } from '../store/productSlice'
+import { fetchProduct, addCommentThunk, deleteCommentThunk } from '../store/productSlice'
 import Modal from '../components/Modal'
 import EditProductForm from '../components/EditProductForm'
 import '../styles/ProductPage.css'
@@ -13,6 +13,7 @@ const ProductPage = () => {
   const { currentProduct, loading, error } = useAppSelector(state => state.products)
   const [commentText, setCommentText] = useState('')
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     if (id) {
@@ -20,10 +21,41 @@ const ProductPage = () => {
     }
   }, [dispatch, id])
 
-  const handleCommentSubmit = (e: React.FormEvent) => {
+  const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Тут буде логіка додавання коментаря
-    setCommentText('')
+    
+    if (!commentText.trim() || !currentProduct) return
+    
+    setIsSubmitting(true)
+    
+    try {
+      await dispatch(addCommentThunk({ 
+        productId: currentProduct.id, 
+        description: commentText.trim() 
+      })).unwrap()
+      
+      // Очищаємо поле вводу після успішного додавання
+      setCommentText('')
+    } catch (error) {
+      console.error('Failed to add comment:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleDeleteComment = async (commentId: number) => {
+    if (!currentProduct) return
+    
+    if (window.confirm('Are you sure you want to delete this comment?')) {
+      try {
+        await dispatch(deleteCommentThunk({
+          productId: currentProduct.id,
+          commentId
+        })).unwrap()
+      } catch (error) {
+        console.error('Failed to delete comment:', error)
+      }
+    }
   }
 
   if (loading) return <div className="container loading">Loading...</div>
@@ -39,7 +71,10 @@ const ProductPage = () => {
         
         <div className="product-container">
           <div className="product-image">
-            <img src={currentProduct.imageUrl} alt={currentProduct.name} />
+            <img 
+              src={currentProduct.imageUrl || "https://placehold.co/400x400?text=No+Image"} 
+              alt={currentProduct.name} 
+            />
           </div>
           
           <div className="product-info">
@@ -83,7 +118,12 @@ const ProductPage = () => {
                   <p className="comment-content">{comment.description}</p>
                   <div className="comment-meta">
                     <span>{comment.date}</span>
-                    <button className="delete-comment">Delete</button>
+                    <button 
+                      className="delete-comment" 
+                      onClick={() => handleDeleteComment(comment.id)}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </li>
               ))}
@@ -105,7 +145,13 @@ const ProductPage = () => {
                   required
                 />
               </div>
-              <button type="submit" className="submit-comment">Submit Comment</button>
+              <button 
+                type="submit" 
+                className="submit-comment"
+                disabled={isSubmitting || commentText.trim() === ''}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Comment'}
+              </button>
             </form>
           </div>
         </div>

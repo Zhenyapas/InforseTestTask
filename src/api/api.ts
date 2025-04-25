@@ -1,4 +1,3 @@
-// api/api.ts
 import axios from 'axios';
 import { Product, Comment } from '../models/Product';
 
@@ -23,17 +22,38 @@ export const updateProduct = async (product: Product): Promise<Product> => {
   return response.data;
 };
 
-export const addComment = async (productId: number, comment: Omit<Comment, 'id'>): Promise<Comment> => {
-  const product = await fetchProductById(productId);
-  const newComment = {
-    ...comment,
-    id: product.comments.length > 0 ? Math.max(...product.comments.map(c => c.id)) + 1 : 1
+
+
+const formatDate = (): string => {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    
+    return `${hours}:${minutes} ${day}.${month}.${year}`;
   };
-  
-  product.comments.push(newComment);
-  await updateProduct(product);
-  return newComment;
-};
+
+  export const addComment = async (productId: number, description: string): Promise<Comment> => {
+    const product = await fetchProductById(productId);
+    
+    const newComment: Comment = {
+      id: product.comments.length > 0 
+        ? Math.max(...product.comments.map(c => c.id)) + 1 
+        : 1,
+      productId,
+      description,
+      date: formatDate()
+    };
+    
+    product.comments.push(newComment);
+    
+    await updateProduct(product);
+    
+    return newComment;
+  };
+
 
 export const deleteComment = async (productId: number, commentId: number): Promise<void> => {
   const product = await fetchProductById(productId);

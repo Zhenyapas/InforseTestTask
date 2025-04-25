@@ -22,7 +22,7 @@ function App() {
       
       <footer className="app-footer">
         <div className="container">
-          <p>&copy; {new Date().getFullYear()} Shop App</p>
+          <p>&copy; {new Date().getFullYear()} Inforce frontend task </p>
         </div>
       </footer>
     </div>
